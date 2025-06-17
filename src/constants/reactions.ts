@@ -9,7 +9,8 @@ import angryIcon from '../assets/reactions/angry.svg';
 export interface ReactionData {
   type: ReactionType;
   icon: string; 
-  label: string;
+  label: string;  
+  color: string;
 }
 
 export const reactionOptions: ReactionData[] = [
@@ -17,30 +18,38 @@ export const reactionOptions: ReactionData[] = [
     type: 'LIKE',
     icon: likeIcon,
     label: 'Like',
+    color: '#3E93F8',
   },
   {
     type: 'LOVE',
     icon: loveIcon,
     label: 'Love',
+    color: '#BC3A76',
   },
   {
     type: 'LAUGH',
     icon: laughIcon,
-    label: 'Laugh',
+    label: 'Haha',
+    color: '#F9CF00',
+
   },
   {
     type: 'WOW',
     icon: wowIcon,
     label: 'Wow',
+    color: '#F9CF00'
   },
   {
     type: 'SAD',
     icon: sadIcon,
     label: 'Sad',
+    color: '#F9CF00'
   },
   {
     type: 'ANGRY',
     icon: angryIcon,
     label: 'Angry',
+    color: '#FF5757',
+
   },
 ];

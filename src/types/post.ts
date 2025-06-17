@@ -1,3 +1,5 @@
+import type { ReactionType } from "../services/reactionService";
+
 export interface PostFile {
   PostFileID: number;
   FileName: string;
@@ -16,7 +18,7 @@ export interface Post {
   TotalComments: number;
   LastReactorUserID?: number;
   LastReactionAuthor?: string;
-  UserReaction?: string;
+  UserReaction?: ReactionType;
   CreateTime: string;
   PostFiles: PostFile[];
   Reactions: {
