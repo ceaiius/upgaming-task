@@ -1,0 +1,13 @@
+import './styles/main.scss'
+
+
+function App() {
+
+  return (
+    <div>
+      App
+    </div>
+  )
+}
+
+export default App
