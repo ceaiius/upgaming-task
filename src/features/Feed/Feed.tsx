@@ -4,9 +4,14 @@ import { fetchAllPosts } from '../../services/postService';
 import { type Post } from '../../types/post';
 import emptyStateImage from '../../assets/clouds.png';
 import PostSkeleton from '../Post/PostSkeleton';
+import PostCard from '../Post/PostCard';
 
-const Feed = () => {
-  const [posts, setPosts] = useState<Post[] | null>(null);
+interface Props {
+  posts: Post[];
+  setPosts: (posts: Post[]) => void;
+}
+
+const Feed = ({ posts, setPosts }: Props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -49,9 +54,9 @@ const Feed = () => {
   return (
     <div className={styles.feed}>
       {posts.map((post) => (
-        <div key={post.PostID} className={styles.postCard}>
-          <p>{post.Content}</p>
-        </div>
+        <PostCard key={post.PostID} post={post} onDelete={(postId) => {
+          setPosts(posts.filter((p) => p.PostID !== postId));
+        }}/>
       ))}
     </div>
   );

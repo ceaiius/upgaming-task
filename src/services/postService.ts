@@ -32,6 +32,12 @@ export const createPost = async ({ content, file }: CreatePostPayload) => {
   });
 };
 
+export const deletePost = async (postId: number) => {
+  return api.post(`/Post/Delete`, {
+    PostID: postId,
+  });
+};
+
 const fileToBase64 = (file: File): Promise<Base64FileDto> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();

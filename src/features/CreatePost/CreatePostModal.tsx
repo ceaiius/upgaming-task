@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import styles from './CreatePost.module.scss';
-import { useStore } from '../../store';
 import uploadIcon from '../../assets/thumbnail.svg'
 import removeIcon from '../../assets/remove.svg'
 import { createPost } from '../../services/postService';
+import type { Post } from '../../types/post';
 
 interface Props {
   onClose: () => void;
+  onPostCreated: (post: Post) => void;
 }
 
-const CreatePostModal = ({ onClose }: Props) => {
+const CreatePostModal = ({ onClose, onPostCreated }: Props) => {
   const [content, setContent] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -58,8 +59,7 @@ const CreatePostModal = ({ onClose }: Props) => {
 
     try {
       const res = await createPost({ content, file: file ?? undefined });
-
-      console.log('Post created:', res.data);
+      onPostCreated(res.data);
       setContent('');
       handleRemoveImage();
       onClose(); // Close modal
@@ -104,7 +104,7 @@ const CreatePostModal = ({ onClose }: Props) => {
             </div>
           )}
           <button className={styles.postBtn} onClick={handleSubmit} disabled={isDisabled}>
-            {loading ? 'Posting...' : 'Post'}
+            {loading ? <div className={styles.spinner} /> : 'Post'}
           </button>
         </div>
       </div>

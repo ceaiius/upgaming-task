@@ -1,4 +1,5 @@
 @import '../../styles/_variables.scss';
+@import '../../styles/_spinner.scss';
 
 .previewContainer {
     background: #fff;
@@ -125,6 +126,9 @@
 .postBtn {
     background-color: #28c76f;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     padding: 0.7rem;
     border-radius: 8px;
@@ -137,4 +141,3 @@
         cursor: not-allowed;
       }
 }
-  

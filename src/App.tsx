@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './styles/main.scss';
 import { useStore } from './store';
 import { fetchUser } from './services/userService';
@@ -6,9 +6,12 @@ import { fetchUser } from './services/userService';
 import CreatePostPreview from './features/CreatePost/CreatePostPreview';
 import Feed from './features/Feed/Feed';
 import Sidebar from './features/Sidebar/Sidebar';
+import type { Post } from './types/post';
 
 const App = () => {
   const { setUser, user } = useStore();
+  const [posts, setPosts] = useState<Post[]>([]);
+
 
   const getUser = async () => {
     try {
@@ -36,8 +39,8 @@ const App = () => {
 
       <div className="main-content">
         <section className="feed-section">
-          <CreatePostPreview />
-          <Feed />
+          <CreatePostPreview onPostCreated={(newPost: Post) => setPosts((prev) => [newPost, ...prev])} />
+          <Feed posts={posts} setPosts={setPosts} />
         </section>
 
         <aside className="sidebar-section">

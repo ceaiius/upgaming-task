@@ -3,8 +3,13 @@ import styles from './CreatePost.module.scss';
 import CreatePostModal from './CreatePostModal';
 
 import { useStore } from '../../store';
+import type { Post } from '../../types/post';
 
-const CreatePostPreview = () => {
+interface Props {
+  onPostCreated: (post: Post) => void;
+}
+
+const CreatePostPreview = ({ onPostCreated }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const user = useStore((state) => state.user);
 
@@ -23,7 +28,7 @@ const CreatePostPreview = () => {
         <div className={styles.fakeInput}>Write a post</div>
       </div>
 
-      {showModal && <CreatePostModal onClose={() => setShowModal(false)} />}
+      {showModal && <CreatePostModal onClose={() => setShowModal(false)} onPostCreated={onPostCreated} />}
     </>
   );
 };
