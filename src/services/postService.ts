@@ -15,7 +15,6 @@ interface CreatePostPayload {
 
 export const fetchAllPosts = async (): Promise<Post[]> => {
   const res = await api.post<Post[]>('/Post/GetAll', {});
-  console.log(res.data);
   return res.data;
 };
 

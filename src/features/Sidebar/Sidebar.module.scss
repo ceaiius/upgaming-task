@@ -1,0 +1,79 @@
+@import '../../styles/variables.scss';
+
+.sidebar {
+  .container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 8px 12px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    width: 100%;
+    gap: 0.5rem;
+    max-width: 300px;
+  }
+
+  .header{
+    font-size: 10px;
+    font-weight: 400;
+    color: $text-quaternary;
+  }
+
+  .content{
+    font-size: 20px;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  .avatarContainer{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .skeletonText {
+    height: 1em;
+    background: linear-gradient(
+      90deg,
+      #eee 25%,
+      #ddd 37%,
+      #eee 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.2s infinite;
+    border-radius: 4px;
+  }
+
+  .skeletonAvatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(
+      90deg,
+      #eee 25%,
+      #ddd 37%,
+      #eee 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -100px 0;
+    }
+    100% {
+      background-position: 100px 0;
+    }
+  }
+
+}
+

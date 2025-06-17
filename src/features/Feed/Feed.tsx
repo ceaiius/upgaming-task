@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styles from './Feed.module.scss';
 import { fetchAllPosts } from '../../services/postService';
 import { type Post } from '../../types/post';
@@ -9,20 +9,18 @@ import PostCard from '../Post/PostCard';
 interface Props {
   posts: Post[];
   setPosts: (posts: Post[]) => void;
+  loading: boolean;
 }
 
-const Feed = ({ posts, setPosts }: Props) => {
-  const [loading, setLoading] = useState(true);
-
+const Feed = ({ posts, setPosts, loading }: Props) => {
   useEffect(() => {
     const loadPosts = async () => {
       try {
         const data = await fetchAllPosts();
+        
         setPosts(data);
       } catch (error) {
         console.error('Failed to fetch posts:', error);
-      } finally {
-        setLoading(false);
       }
     };
 

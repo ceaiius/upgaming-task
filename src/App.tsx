@@ -8,11 +8,26 @@ import Feed from './features/Feed/Feed';
 import Sidebar from './features/Sidebar/Sidebar';
 import type { Post } from './types/post';
 import { useReactionStore } from './store/reactions';
+import { fetchAllPosts } from './services/postService';
 
 const App = () => {
   const { setUser, user } = useStore();
   const [posts, setPosts] = useState<Post[]>([]);
   const { fetchReactionTypes } = useReactionStore();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchAllPosts();
+        setPosts(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   const getUser = async () => {
     try {
@@ -45,11 +60,11 @@ const App = () => {
       <div className="main-content">
         <section className="feed-section">
           <CreatePostPreview onPostCreated={(newPost: Post) => setPosts((prev) => [newPost, ...prev])} />
-          <Feed posts={posts} setPosts={setPosts} />
+          <Feed posts={posts} setPosts={setPosts} loading={loading} />
         </section>
 
         <aside className="sidebar-section">
-          <Sidebar />
+          <Sidebar posts={posts} loading={loading}/>
         </aside>
       </div>
     </div>
