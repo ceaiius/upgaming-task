@@ -7,11 +7,12 @@ import CreatePostPreview from './features/CreatePost/CreatePostPreview';
 import Feed from './features/Feed/Feed';
 import Sidebar from './features/Sidebar/Sidebar';
 import type { Post } from './types/post';
+import { useReactionStore } from './store/reactions';
 
 const App = () => {
   const { setUser, user } = useStore();
   const [posts, setPosts] = useState<Post[]>([]);
-
+  const { fetchReactionTypes } = useReactionStore();
 
   const getUser = async () => {
     try {
@@ -21,6 +22,10 @@ const App = () => {
       console.error('Failed to load user:', err);
     }
   };
+
+  useEffect(() => {
+    fetchReactionTypes();
+  }, []);
 
   useEffect(() => {
     getUser();

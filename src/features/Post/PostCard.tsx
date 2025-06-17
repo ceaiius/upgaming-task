@@ -5,6 +5,8 @@ import { formatPostTimestamp } from '../../utils/dateUtils';
 import moreIcon from '../../assets/dots.svg';
 import deleteIcon from '../../assets/delete.svg';
 import { deletePost } from '../../services/postService';
+import ReactionsSection from '../Reactions/Reactions';
+import commentIcon from '../../assets/comment.svg';
 
 interface Props {
   post: Post;
@@ -110,6 +112,14 @@ const PostCard = ({ post, onDelete }: Props) => {
           />
         </div>
       )}
+      <div className={styles.footer}>
+      <ReactionsSection post={post} />
+      <div className={styles.commentBtn}>
+        <img src={commentIcon} alt="comment" />
+        <span>Comment</span>
+      </div>
+      </div>
+
     </div>
   );
 };
