@@ -18,7 +18,7 @@ export const reactionOptions: ReactionData[] = [
     type: 'LIKE',
     icon: likeIcon,
     label: 'Like',
-    color: '#3E93F8',
+    color: '#237AB7',
   },
   {
     type: 'LOVE',
@@ -30,26 +30,26 @@ export const reactionOptions: ReactionData[] = [
     type: 'LAUGH',
     icon: laughIcon,
     label: 'Haha',
-    color: '#F9CF00',
+    color: '#F5C123',
 
   },
   {
     type: 'WOW',
     icon: wowIcon,
     label: 'Wow',
-    color: '#F9CF00'
+    color: '#F5C123'
   },
   {
     type: 'SAD',
     icon: sadIcon,
     label: 'Sad',
-    color: '#F9CF00'
+    color: '#F5C123'
   },
   {
     type: 'ANGRY',
     icon: angryIcon,
     label: 'Angry',
-    color: '#FF5757',
+    color: '#F5C123',
 
   },
 ];

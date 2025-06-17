@@ -7,6 +7,7 @@ import deleteIcon from '../../assets/delete.svg';
 import { deletePost } from '../../services/postService';
 import ReactionsSection from '../Reactions/Reactions';
 import commentIcon from '../../assets/comment.svg';
+import Reactors from '../Reactors/Reactors';
 
 interface Props {
   post: Post;
@@ -112,6 +113,8 @@ const PostCard = ({ post, onDelete }: Props) => {
           />
         </div>
       )}
+      <Reactors post={post} />
+
       <div className={styles.footer}>
       <ReactionsSection post={post} />
       <div className={styles.commentBtn}>

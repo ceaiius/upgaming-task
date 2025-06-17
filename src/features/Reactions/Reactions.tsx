@@ -24,13 +24,22 @@ const ReactionsSection = ({ post }: Props) => {
   }, []);
 
   const handleDefaultLike = async () => {
-    const newReaction = userReaction === 'LIKE' ? null : 'LIKE';
-    setUserReaction(newReaction);
-  
-    try {
-      await toggleReaction(post.PostID, 'LIKE');
-    } catch (err) {
-      setUserReaction(userReaction);
+    if (userReaction) {
+      const toRemove = userReaction;
+      setUserReaction(null);
+      try {
+        await toggleReaction(post.PostID, toRemove);
+      } catch {
+        setUserReaction(toRemove);
+      }
+    } else {
+      // add LIKE
+      setUserReaction('LIKE');
+      try {
+        await toggleReaction(post.PostID, 'LIKE');
+      } catch {
+        setUserReaction(null);
+      }
     }
   };
   
