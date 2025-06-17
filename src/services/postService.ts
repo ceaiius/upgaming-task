@@ -1,4 +1,5 @@
 import api from '../api/axios';
+import type { Post } from '../types/post';
 
 interface Base64FileDto {
   FileName: string;
@@ -11,6 +12,11 @@ interface CreatePostPayload {
   content?: string;
   file?: File;
 }
+
+export const fetchAllPosts = async (): Promise<Post[]> => {
+  const res = await api.post<Post[]>('/Post/GetAll', {});
+  return res.data;
+};
 
 export const createPost = async ({ content, file }: CreatePostPayload) => {
   let filesJson = null;

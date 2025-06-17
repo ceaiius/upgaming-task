@@ -1,0 +1,47 @@
+@import '../../styles/variables.scss';
+
+
+.feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .postCard {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px #e5e5e5;
+  }
+  
+.emptyState {
+  width: 480px;
+  height: 480px;
+  margin:auto;
+  border-radius: 12px;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 2.5rem; 
+    
+  }
+
+  p {
+    font-weight: 600;
+    font-size: 1rem;
+    color: $text-primary;
+  }
+}
+

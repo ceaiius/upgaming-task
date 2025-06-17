@@ -1,13 +1,36 @@
-import "./styles/main.scss";
-import Feed from "./features/Feed/Feed";
-import Sidebar from "./features/Sidebar/Sidebar";
-import CreatePostPreview from "./features/CreatePost/CreatePostPreview";
+import { useEffect } from 'react';
+import './styles/main.scss';
+import { useStore } from './store';
+import { fetchUser } from './services/userService';
+
+import CreatePostPreview from './features/CreatePost/CreatePostPreview';
+import Feed from './features/Feed/Feed';
+import Sidebar from './features/Sidebar/Sidebar';
 
 const App = () => {
+  const { setUser, user } = useStore();
+
+  const getUser = async () => {
+    try {
+      const data = await fetchUser();
+      setUser(data);
+    } catch (err) {
+      console.error('Failed to load user:', err);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, [setUser]);
+
   return (
     <div className="app-container">
       <div className="header">
-        <h1>Good Morning Nick</h1>
+      {user ? (
+        <h1>Good Morning {user.FirstName}</h1>
+      ) : (
+        <h1>Loading user...</h1>
+      )}
         <p>Hello! Hope you’re having a fantastic day!</p>
       </div>
 
