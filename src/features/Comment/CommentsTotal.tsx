@@ -22,7 +22,7 @@ const CommentsAuthorsPopover = ({ postId, children, onAuthorsChange }: { postId:
     try {
       const commenters = await fetchCommentAuthors(postId)
 
-      const mapped = commenters.map((c: any) => ({
+      const mapped = commenters.map((c: Commenter) => ({
         UserID: c.UserID,
         FirstName: c.FirstName,
         LastName: c.LastName,
