@@ -1,0 +1,197 @@
+@use '../../styles/variables' as *;
+
+.item {
+  position: relative;
+  width: 100%;
+}
+
+.item:not(:last-child) { padding-bottom: .75rem; }
+
+.body {
+  flex: 1;
+  min-width: 0;
+  padding: 0.25rem 1rem 0.25rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .85rem;
+}
+
+.name { font-weight: 600; }
+.time { color: $text-tertiary; }
+
+.content {               /* comment text */
+  margin: 0.5rem 0 0.5rem 0;
+  font-size: 1rem;
+  color: $text-primary;
+  word-break: break-word;
+}
+
+.actions {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.95rem;
+  color: $text-tertiary;
+  margin-bottom: 0.25rem;
+}
+
+.dot::before {
+  content:'•';
+  margin: 0 .25rem;
+}
+
+.actions button {
+  all: unset;
+  cursor:pointer;
+  &:hover { color:$text-error-primary }
+}
+
+:is(.item) > .item {
+  margin-left: 2rem;
+}
+
+.commentBox {
+  padding: 0 0 0.5rem 0;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.metaRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-width: 0;
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  gap: 0.75rem;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-right: 0.25rem;
+  color: $text-primary;
+  display: block;
+}
+
+.role {
+  color: $text-quaternary;
+  font-size:0.875rem;
+  margin: 0.1rem 0 0.2rem 0;
+  display: block;
+}
+
+.time {
+  color: $text-tertiary;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  margin-left: 0.5rem;
+}
+
+.action {
+  cursor: pointer;
+  color: $text-quaternary;
+  font-weight: 500;
+  &:hover {
+    color: $text-error-primary;
+    text-decoration: underline;
+  }
+}
+
+.showReplies {
+  color: $text-tertiary;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: 600;
+  &:hover {
+    color: $text-primary;
+    text-decoration: underline;
+  }
+}
+
+.replies {
+  margin-left: 2.5rem;
+  margin-top: 0.5rem;
+  border-left: 2px solid $border;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column !important;
+  gap: 0.5rem;
+}
+
+.menuWrapper {
+  position: relative;
+  top: 10px;
+
+  .menuButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .menuDropdown {
+    position: absolute;
+    top: 28px;
+    right: 0;
+    min-width: 160px;
+    background: #fff;
+    border: 1px solid $border;
+    border-radius: 8px;
+    z-index: 10;
+    padding: 0.25rem 0;
+    box-shadow:
+      0px 2px 2px -1px rgba(16, 24, 40, 0.03),
+      0px 4px 6px -2px rgba(16, 24, 40, 0.06),
+      0px 12px 16px -4px rgba(16, 24, 40, 0.08);
+  }
+
+  .menuItem {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: $text-error-primary;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+}
+
+.spinnerWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .spinner {
+    --spinner-color: #D92D20;
+  }
+}
+  

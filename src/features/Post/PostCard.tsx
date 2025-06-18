@@ -10,8 +10,10 @@ import commentIcon from '../../assets/comment.svg';
 import Reactors from '../Reactors/Reactors';
 import { useStore } from '../../store';
 import type { ReactionType } from '../../services/reactionService';
+import CommentForm from '../Comment/CommentForm';
+import CommentSection from '../Comment/CommentSection';
 
-interface Props {
+interface Props { 
   post: Post;
   onDelete: (postId: number) => void;
 }
@@ -23,7 +25,7 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  
+  const [showCommentInput, setShowCommentInput] = useState(false);
   const [post, setPost] = useState<Post>(initial);
   const isAuthor = useMemo(() => user?.UserID === post.AuthorID, [user, post.AuthorID]);
   useEffect(() => {
@@ -40,6 +42,8 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
     prev: ReactionType | null,
     next: ReactionType | null
   ) => {
+   
+    
     setPost((p) => {
       const counts = { ...p.Reactions };
       if (prev) counts[prev] = Math.max(0, (counts[prev] || 0) - 1);
@@ -53,20 +57,12 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
       let prevAuthor = (p as any).prevAuthor ?? p.LastReactionAuthor;
       let lastAuthor = p.LastReactionAuthor;
   
-      const myName = `${user?.FirstName} ${user?.LastName}`;
-  
       if (next) {
         prevAuthor = lastAuthor;
-        lastAuthor = prevAuthor === myName && prevAuthor !== undefined
-          ? prevAuthor
-          : myName;
+        lastAuthor = `${user?.FirstName} ${user?.LastName}`;
       } else if (prev) {
-        lastAuthor = total > 0 ? prevAuthor : undefined;
+        lastAuthor = total > 0 ? prevAuthor : undefined; 
         if (total === 0) prevAuthor = undefined;
-      }
-  
-      if (lastAuthor === myName && prevAuthor && prevAuthor !== myName) {
-        lastAuthor = prevAuthor;
       }
   
       return {
@@ -75,7 +71,7 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
         Reactions: counts,
         TotalReactions: total,
         LastReactionAuthor: lastAuthor,
-        prevAuthor,
+        prevAuthor, 
       };
     });
   };
@@ -169,11 +165,17 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
 
       <div className={styles.footer}>
       <Reactions post={post} onToggle={handleReactionChange} />
-      <div className={styles.commentBtn}>
+      <div className={styles.commentBtn} onClick={() => setShowCommentInput(!showCommentInput)}>
         <img src={commentIcon} alt="comment" />
         <span>Comment</span>
       </div>
       </div>
+
+      {showCommentInput && (
+        <div className={styles.commentForm}>
+          <CommentSection postId={post.PostID} totalComments={post.TotalComments}/>
+        </div>
+      )}
 
     </div>
   );

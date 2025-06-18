@@ -1,0 +1,57 @@
+@use '../../styles/variables' as *;
+
+.form {
+  background: #fff;
+  border: 1px solid #e5e6ea;
+  border-radius: 999px;
+  padding: 1px 4px 1px 12px;
+  display: flex;
+  
+  align-items: center;
+  margin: 0.5rem 0;
+  box-shadow: none;
+}
+
+.inputWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.editable {
+  flex: 1;
+  min-height: 40px;
+  max-height: 120px;
+  overflow-y: auto;
+  border: none;
+  outline: none;
+  color: $text-error-primary;
+  background: transparent;
+  font-size: 1rem;
+  color: $text-primary;
+  padding: 0.7rem 0;
+  margin-right: 0.5rem;
+  resize: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.editable:empty:before {
+  content: attr(data-placeholder);
+  color: $text-placeholder;
+  pointer-events: none;
+}
+
+.submitBtn {
+  background: none;
+  border: none;
+  color: $text-green;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  transition: background 0.2s;
+  &:disabled { opacity: 0; cursor: default; }
+}
