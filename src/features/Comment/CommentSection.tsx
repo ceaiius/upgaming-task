@@ -7,7 +7,6 @@ import CommentList from './CommentList'
 
 interface Props {
   postId: number
-  totalComments: number
 }
 
 export default function CommentSection({ postId }: Props) {

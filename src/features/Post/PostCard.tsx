@@ -11,6 +11,7 @@ import Reactors from '../Reactors/Reactors';
 import { useStore } from '../../store';
 import type { ReactionType } from '../../services/reactionService';
 import CommentSection from '../Comment/CommentSection';
+import CommentsTotal from '../Comment/CommentsTotal';
 
 interface Props { 
   post: Post;
@@ -24,6 +25,7 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [post, setPost] = useState<Post>(initial);
   const isAuthor = useMemo(() => user?.UserID === post.AuthorID, [user, post.AuthorID]);
@@ -160,7 +162,10 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
           />
         </div>
       )}
-      <Reactors post={post} user={user} />
+      <div className={styles.commentAndReactionsContainer}>
+        <Reactors post={post} user={user} />
+        <CommentsTotal totalComments={post.TotalComments} postId={post.PostID} onClick={() => setShowCommentInput(!showCommentInput)}/> 
+      </div>
 
       <div className={styles.footer}>
       <Reactions post={post} onToggle={handleReactionChange} />
@@ -172,7 +177,7 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
 
       {showCommentInput && (
         <div className={styles.commentForm}>
-          <CommentSection postId={post.PostID} totalComments={post.TotalComments}/>
+          <CommentSection postId={post.PostID} />
         </div>
       )}
 

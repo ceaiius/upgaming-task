@@ -1,0 +1,36 @@
+@use '../../styles/variables' as *;
+@use '../../styles/spinner' as *;
+
+.commentsTotal {
+    font-size: 0.875rem;
+    color: $text-disabled;
+    font-weight: 400;
+
+}
+
+
+.spinner {
+    --spinner-color: #fff;
+    margin-top: 0.5rem;
+    align-self: center;
+
+}
+
+.popoverContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.popoverList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.popoverItem {
+  display: flex;
+  align-items: center;
+}

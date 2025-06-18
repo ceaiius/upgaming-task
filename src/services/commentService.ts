@@ -1,6 +1,7 @@
 import api from '../api/axios';
 import { type ReactionType } from './reactionService';
 import type { Comment } from '../types/comment';
+import type { Commenter } from '../types/commenter';
 
 
 export const fetchComments = (postId: number) =>
@@ -11,6 +12,9 @@ export const createComment = (postId: number, content: string) =>
 
 export const createReply = (commentId: number, content: string) =>
   api.post<Comment>('/Comment/ReplyCreate', { CommentID: commentId, Content: content });
+
+export const fetchCommentAuthors = (postId: number) =>
+  api.post<Commenter[]>('/Post/CommenterGetAll', { PostID: postId }).then(r => r.data);
 
 export const toggleCommentReact = (id: number, type?: ReactionType) =>
   api.post('/Comment/ReactionToggle', { CommentID: id, ReactionType: type });
