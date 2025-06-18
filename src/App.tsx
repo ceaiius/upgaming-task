@@ -19,31 +19,20 @@ const App = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchAllPosts();
-        setPosts(data);
+        const [postsData, userData] = await Promise.all([
+          fetchAllPosts(),
+          fetchUser(),
+        ]);
+        
+        setPosts(postsData);
+        setUser(userData);
+        fetchReactionTypes();
       } catch (err) {
-        console.error(err);
+        console.error('Failed to load initial data:', err);
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
-
-  const getUser = async () => {
-    try {
-      const data = await fetchUser();
-      setUser(data);
-    } catch (err) {
-      console.error('Failed to load user:', err);
-    }
-  };
-
-  useEffect(() => {
-    fetchReactionTypes();
-  }, []);
-
-  useEffect(() => {
-    getUser();
   }, [setUser]);
 
   return (
@@ -54,7 +43,7 @@ const App = () => {
       ) : (
         <h1>Loading user...</h1>
       )}
-        <p>Hello! Hope you’re having a fantastic day!</p>
+        <p>Hello! Hope you're having a fantastic day!</p>
       </div>
 
       <div className="main-content">

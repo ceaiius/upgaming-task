@@ -1,29 +1,31 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './PostCard.module.scss';
 import { type Post } from '../../types/post';
 import { formatPostTimestamp } from '../../utils/dateUtils';
 import moreIcon from '../../assets/dots.svg';
 import deleteIcon from '../../assets/delete.svg';
 import { deletePost } from '../../services/postService';
-import ReactionsSection from '../Reactions/Reactions';
+import Reactions from '../Reactions/Reactions';
 import commentIcon from '../../assets/comment.svg';
 import Reactors from '../Reactors/Reactors';
 import { useStore } from '../../store';
+import type { ReactionType } from '../../services/reactionService';
 
 interface Props {
   post: Post;
   onDelete: (postId: number) => void;
 }
 
-const PostCard = ({ post, onDelete }: Props) => {
+const PostCard = ({ post: initial, onDelete }: Props) => {
   const user = useStore((state) => state.user);
   const [showMore, setShowMore] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const isAuthor = user?.UserID === post.AuthorID;
   
+  const [post, setPost] = useState<Post>(initial);
+  const isAuthor = useMemo(() => user?.UserID === post.AuthorID, [user, post.AuthorID]);
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -33,6 +35,24 @@ const PostCard = ({ post, onDelete }: Props) => {
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
+
+  const handleReactionChange = (prev: ReactionType | null, next: ReactionType | null) => {
+    setPost((p) => {
+      const counts = { ...p.Reactions };
+      if (prev) counts[prev] = Math.max(0, (counts[prev] || 0) - 1);
+      if (next) counts[next] = (counts[next] || 0) + 1;
+
+      const total = p.TotalReactions + (next ? 1 : 0) - (prev ? 1 : 0);
+      return {
+        ...p,
+        UserReaction: next || undefined,
+        Reactions: counts,
+        TotalReactions: total,
+        LastReactionAuthor:
+          next ? `${user?.FirstName} ${user?.LastName}` : p.LastReactionAuthor,
+      };
+    });
+  };
 
   const displayText = showMore || (post.Content?.length || 0) <= 180
     ? post.Content
@@ -89,7 +109,7 @@ const PostCard = ({ post, onDelete }: Props) => {
               </div>
             </div>
           )}
-          </div>
+        </div>
         )}
       </div>
 
@@ -112,16 +132,17 @@ const PostCard = ({ post, onDelete }: Props) => {
           <img
             src={post.PostFiles[0].FileUrl}
             alt="Post attachment"
-            
+            loading="lazy"
+            decoding="async"
             className={imageLoaded ? styles.imageVisible : styles.imageHidden}
             onLoad={() => setImageLoaded(true)}
           />
         </div>
       )}
-      <Reactors post={post} />
+      <Reactors post={post} user={user} />
 
       <div className={styles.footer}>
-      <ReactionsSection post={post} />
+      <Reactions post={post} onToggle={handleReactionChange} />
       <div className={styles.commentBtn}>
         <img src={commentIcon} alt="comment" />
         <span>Comment</span>

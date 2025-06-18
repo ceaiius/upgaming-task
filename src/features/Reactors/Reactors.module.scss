@@ -1,4 +1,5 @@
 @use '../../styles/variables.scss' as *;
+@use '../../styles/spinner.scss' as *;
 
 .summary {
     display: flex;
@@ -11,15 +12,49 @@
   
   .icons {
     display: flex;
-    gap: 0.25rem;
-  
-    img {
-      width: 20px;
-      height: 20px;
+    position: relative;
+    
+    > * {
+      img {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      
+      & + * {
+        margin-left: -7px;
+      }
     }
   }
   
   .text {
     font-weight: 500;
   }
+
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .reactor {
+    padding: 0.25rem 0;
+  }
+  
+  .more {
+    padding: 0.25rem 0;
+  }
+  
+  .empty {
+    padding: 0.25rem 0;
+    color: #888;
+  }
+
+  .spinner {
+    --spinner-color: #fff;
+    margin-top: 0.5rem;
+    align-self: center;
+}
   

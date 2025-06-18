@@ -1,0 +1,25 @@
+.wrapper {
+    position: relative;
+    display: inline-block;
+    
+  }
+  
+  .popover {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    min-width: 125px;
+    background: #1e1e2a;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 1000;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  
