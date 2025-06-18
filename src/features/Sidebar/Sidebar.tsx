@@ -2,6 +2,8 @@ import  { useMemo } from 'react';
 import styles from './Sidebar.module.scss';
 import { type Post } from '../../types/post';
 import SidebarSkeleton from './SidebarSkeleton';
+import SidebarCount from './SidebarCount';
+import SidebarTopAuthors from './SidebarTopAuthors';
 
 interface Props {
   posts: Post[];
@@ -39,7 +41,7 @@ const Sidebar = ({ posts, loading }: Props) => {
 
     return Object.values(counts)
       .sort((a, b) => b.count - a.count)
-      .slice(0, 5)
+      .slice(0, 8)
       .map((a) => a.avatar);
   }, [posts, weekAgo]);
 
@@ -51,34 +53,8 @@ const Sidebar = ({ posts, loading }: Props) => {
 
   return (
     <div className={styles.sidebar}>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h2>Total posts this week</h2>
-        </div>
-        <div className={styles.content}>
-          <span>{weeklyCount}</span>
-        </div>
-      </div>
-
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h2>Most active authors</h2>
-        </div>
-        <div className={styles.content}>
-          <div className={styles.avatarContainer}>
-            {topAuthors.length
-              ? topAuthors.map((url, i) => (
-                  <img
-                    key={i}
-                    src={url}
-                    alt="author avatar"
-                    className={styles.avatar}
-                  />
-                ))
-              : 'No activity'}
-          </div>
-        </div>
-      </div>
+      <SidebarCount weeklyCount={weeklyCount} />
+      <SidebarTopAuthors topAuthors={topAuthors} />
     </div>
   );
 };

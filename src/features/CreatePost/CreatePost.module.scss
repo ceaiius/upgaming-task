@@ -1,5 +1,5 @@
-@import '../../styles/_variables.scss';
-@import '../../styles/_spinner.scss';
+@use '../../styles/_variables.scss' as *;
+@use '../../styles/_spinner.scss' as *;
 
 .previewContainer {
     background: #fff;
@@ -70,7 +70,7 @@
     padding: 0.8rem;
     border-radius: 8px;
     border: 1px solid #ccc;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .imagePreview {
@@ -140,4 +140,8 @@
         color: #aaa;
         cursor: not-allowed;
       }
+
+    .spinner {
+        --spinner-color: #28c76f;
+    }
 }

@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import styles from './Feed.module.scss';
-import { fetchAllPosts } from '../../services/postService';
 import { type Post } from '../../types/post';
 import emptyStateImage from '../../assets/clouds.png';
 import PostSkeleton from '../Post/PostSkeleton';
@@ -13,20 +11,7 @@ interface Props {
 }
 
 const Feed = ({ posts, setPosts, loading }: Props) => {
-  useEffect(() => {
-    const loadPosts = async () => {
-      try {
-        const data = await fetchAllPosts();
-        
-        setPosts(data);
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
-      }
-    };
-
-    loadPosts();
-  }, []);
-
+ 
   if (loading) {
     return (
       <>

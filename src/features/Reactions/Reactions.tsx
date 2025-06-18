@@ -20,7 +20,9 @@ const ReactionsSection = ({ post }: Props) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    setShowPopup(true);
+    timeoutRef.current = setTimeout(() => {
+      setShowPopup(true);
+    }, 300); 
   }, []);
 
   const handleDefaultLike = async () => {
@@ -33,7 +35,7 @@ const ReactionsSection = ({ post }: Props) => {
         setUserReaction(toRemove);
       }
     } else {
-      // add LIKE
+
       setUserReaction('LIKE');
       try {
         await toggleReaction(post.PostID, 'LIKE');
@@ -45,9 +47,12 @@ const ReactionsSection = ({ post }: Props) => {
   
 
   const handleMouseLeave = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
     timeoutRef.current = setTimeout(() => {
       setShowPopup(false);
-    }, 50); 
+    }, 100);
   }, []);
 
   const handleReact = async (type: ReactionType) => {
@@ -89,20 +94,18 @@ const ReactionsSection = ({ post }: Props) => {
                 <span style={{ color: displayColor }}>{displayLabel}</span>
             </div>
         </div>
-        {showPopup && (
-          <div className={styles.reactionPopup}>
-            {reactionOptions.map(({ type, icon, label }) => (
-              <img
-                key={type}
-                src={icon}
-                alt={label}
-                title={label}
-                className={styles.reactionIcon}
-                onClick={() => handleReact(type)}
-              />
-            ))}
-          </div>
-        )}
+        <div className={`${styles.reactionPopup} ${showPopup ? styles.show : ''}`}>
+          {reactionOptions.map(({ type, icon, label }) => (
+            <img
+              key={type}
+              src={icon}
+              alt={label}
+              title={label}
+              className={styles.reactionIcon}
+              onClick={() => handleReact(type)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
