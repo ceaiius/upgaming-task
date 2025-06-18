@@ -13,6 +13,8 @@
   .icons {
     display: flex;
     position: relative;
+    align-items: center;
+    min-height: 24px;
     
     > * {
       img {
@@ -56,5 +58,13 @@
     --spinner-color: #fff;
     margin-top: 0.5rem;
     align-self: center;
+}
+
+.iconsEmpty {
+  min-width: 50px;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  visibility: hidden;
 }
   

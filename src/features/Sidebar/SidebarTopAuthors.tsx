@@ -1,10 +1,19 @@
 import styles from './Sidebar.module.scss'
+import Avatar from '../../components/Avatar/Avatar';
+
+interface TopAuthor {
+  avatar: string;
+  firstName: string;
+  lastName: string;
+  count: number;
+}
 
 interface Props {
-  topAuthors: string[];
+  topAuthors: TopAuthor[];
 }
 
 const SidebarTopAuthors = ({ topAuthors }: Props) => {
+  console.log(topAuthors);
   return (
     <div className={styles.container}>
         <div className={styles.header}>
@@ -13,12 +22,13 @@ const SidebarTopAuthors = ({ topAuthors }: Props) => {
         <div className={styles.content}>
           <div className={styles.avatarContainer}>
             {topAuthors.length
-              ? topAuthors.map((url, i) => (
-                  <img
+              ? topAuthors.map((author, i) => (
+                  <Avatar
                     key={i}
-                    src={url}
-                    alt="author avatar"
-                    className={styles.avatar}
+                    src={author.avatar}
+                    firstName={author.firstName}
+                    lastName={author.lastName}
+                
                   />
                 ))
               : 'No activity'}

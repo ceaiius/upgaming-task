@@ -24,7 +24,7 @@ const Sidebar = ({ posts, loading }: Props) => {
   );
 
   const topAuthors = useMemo(() => {
-    const counts: Record<string, { count: number; avatar: string }> = {};
+    const counts: Record<string, { count: number; avatar: string; firstName: string; lastName: string }> = {};
 
     for (const p of posts) {
       const created = new Date(p.CreateTime);
@@ -33,7 +33,9 @@ const Sidebar = ({ posts, loading }: Props) => {
       if (!counts[key]) {
         counts[key] = {
           count: 0,
-          avatar: p.AuthorAvatarUrl || 'src/assets/avatar-default.svg',
+          avatar: p.AuthorAvatarUrl || '',
+          firstName: p.AuthorFirstName,
+          lastName: p.AuthorLastName,
         };
       }
       counts[key].count++;
@@ -41,8 +43,7 @@ const Sidebar = ({ posts, loading }: Props) => {
 
     return Object.values(counts)
       .sort((a, b) => b.count - a.count)
-      .slice(0, 8)
-      .map((a) => a.avatar);
+      .slice(0, 8);
   }, [posts, weekAgo]);
 
   if (loading) {

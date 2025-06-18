@@ -9,6 +9,7 @@ import { deleteComment } from '../../services/commentService'
 import { useCommentStore } from '../../store/comment'
 import CommentReactions from './CommentReactions'
 import { reactionOptions } from '../../constants/reactions'
+import Avatar from '../../components/Avatar/Avatar'
 
 interface Props {
   comment: Comment
@@ -18,7 +19,7 @@ interface Props {
 
 export default function CommentItem({ comment, postId, isRoot = false }: Props) {
   const [replying, setReplying] = useState(false)
-  const [showReplies, setShowReplies] = useState(true)
+  const [showReplies, setShowReplies] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -51,7 +52,7 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
     <li className={styles.item + (isRoot ? ' ' + styles.isRoot : '') + (hasReplies ? ' ' + styles.hasReplies : '')}>
       <div className={styles.commentBox}>
         <div className={styles.row}>
-          <img src={comment.AuthorAvatar || '/default-avatar.png'} className={styles.avatar} />
+          <Avatar src={comment.AuthorAvatar} firstName={comment.AuthorFirstName} lastName={comment.AuthorLastName} />
           <div className={styles.body}>
             <div className={styles.metaRow}>
               <div>

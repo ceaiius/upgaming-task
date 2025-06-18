@@ -1,0 +1,18 @@
+@use '../../styles/variables.scss' as *;
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e5e6ea;
+  color: $text-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 1px;
+  flex-shrink: 0; 
+}
+

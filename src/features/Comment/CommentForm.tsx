@@ -24,6 +24,16 @@ const CommentForm = ({ postId, parentId, onSubmit }: Props) => {
     setText(e.currentTarget.textContent || '');
   };
 
+  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    if (e.clipboardData.files.length > 0) {
+      e.preventDefault();
+      return;
+    }
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
+  };
+
   const submit = async () => {
     if (!text.trim()) return;
     const temp = {
@@ -75,6 +85,7 @@ const CommentForm = ({ postId, parentId, onSubmit }: Props) => {
           contentEditable={!sending}
           ref={inputRef}
           onInput={handleInput}
+          onPaste={handlePaste}
           data-placeholder={parentId ? 'Write a reply…' : 'Write your comment'}
           role="textbox"
           aria-multiline="true"

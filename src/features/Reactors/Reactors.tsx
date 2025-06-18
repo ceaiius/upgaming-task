@@ -141,7 +141,7 @@ const Reactors = ({ post, user }: Props) => {
 
   return (
     <div className={styles.summary}>
-      <div className={styles.icons}>
+      <div className={styles.icons + (topTypes.length === 0 ? ' ' + styles.iconsEmpty : '')}>
         {topTypes.map((t) => {
           const { icon } = reactionOptions.find((r) => r.type === t)!;
           return (

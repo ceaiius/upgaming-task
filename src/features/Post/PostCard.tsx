@@ -12,6 +12,7 @@ import { useStore } from '../../store';
 import type { ReactionType } from '../../services/reactionService';
 import CommentSection from '../Comment/CommentSection';
 import CommentsTotal from '../Comment/CommentsTotal';
+import Avatar from '../../components/Avatar/Avatar';
 
 interface Props { 
   post: Post;
@@ -97,7 +98,7 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
     <div className={styles.card}>
       <div className={styles.header}>
         <div className={styles.authorInfo}>
-          <img src={post.AuthorAvatarUrl} alt={post.AuthorFirstName} className={styles.avatar} />
+          <Avatar src={post.AuthorAvatarUrl} firstName={post.AuthorFirstName} lastName={post.AuthorLastName}/>
 
           <div className={styles.authorDetails}>
           <div className={styles.nameAndTimestamp}>

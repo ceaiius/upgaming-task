@@ -3,11 +3,10 @@
 .form {
   background: #fff;
   border: 1px solid #e5e6ea;
-  border-radius: 999px;
-  padding: 1px 4px 1px 12px;
+  border-radius: 12px;
+ 
   display: flex;
-  
-  align-items: center;
+  align-items: flex-start;
   margin: 0.5rem 0;
   box-shadow: none;
 }
@@ -15,7 +14,7 @@
 .inputWrapper {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   position: relative;
 }
 
@@ -26,12 +25,12 @@
   overflow-y: auto;
   border: none;
   outline: none;
-  color: $text-error-primary;
-  background: transparent;
+  background: #f8f9fa;
   font-size: 1rem;
   color: $text-primary;
-  padding: 0.7rem 0;
+  padding: 0.7rem 1rem;
   margin-right: 0.5rem;
+  border-radius: 12px;
   resize: none;
   white-space: pre-wrap;
   word-break: break-word;
