@@ -8,6 +8,7 @@ import { deletePost } from '../../services/postService';
 import ReactionsSection from '../Reactions/Reactions';
 import commentIcon from '../../assets/comment.svg';
 import Reactors from '../Reactors/Reactors';
+import { useStore } from '../../store';
 
 interface Props {
   post: Post;
@@ -15,12 +16,14 @@ interface Props {
 }
 
 const PostCard = ({ post, onDelete }: Props) => {
+  const user = useStore((state) => state.user);
   const [showMore, setShowMore] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
+  const isAuthor = user?.UserID === post.AuthorID;
+  
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -62,7 +65,8 @@ const PostCard = ({ post, onDelete }: Props) => {
         </div>
         </div>
 
-        <div className={styles.menuWrapper} ref={menuRef}>
+        {isAuthor && (
+          <div className={styles.menuWrapper} ref={menuRef}>
           <button className={styles.menuButton} onClick={() => setShowMenu(!showMenu)}>
             <img src={moreIcon} alt="options" />
           </button>
@@ -85,7 +89,8 @@ const PostCard = ({ post, onDelete }: Props) => {
               </div>
             </div>
           )}
-        </div>
+          </div>
+        )}
       </div>
 
 
