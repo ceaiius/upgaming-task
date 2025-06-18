@@ -71,7 +71,7 @@ const Reactors = ({ post, user }: Props) => {
   
       return list;
     });
-  }, [post.UserReaction, user]);  
+  }, [post.UserReaction, user, allReactors]);  
 
   const topTypes = useMemo(() => 
     Object.entries(Reactions)

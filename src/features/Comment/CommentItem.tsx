@@ -7,7 +7,6 @@ import moreIcon from '../../assets/dots.svg'
 import deleteIcon from '../../assets/Delete.svg'
 import { deleteComment } from '../../services/commentService'
 import { useCommentStore } from '../../store/comment'
-import { useStore } from '../../store'
 
 interface Props {
   comment: Comment
@@ -22,7 +21,6 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
   const [isDeleting, setIsDeleting] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const removeComment = useCommentStore(s => s.removeComment)
-  const user = useStore(s => s.user)
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {

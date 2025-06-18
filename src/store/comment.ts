@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Comment } from '../services/commentService';
+import type { Comment } from '../types/comment';
 
 interface State {
   byPost: Record<number, Comment[]>;

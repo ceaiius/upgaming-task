@@ -30,32 +30,12 @@ const CreatePostModal = forwardRef<HTMLDivElement, Props>(({ onClose, onPostCrea
     setPreviewUrl(null);
   };
 
-  const fileToBase64 = (file: File): Promise<any> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const base64 = (reader.result as string).split(',')[1];
-        resolve({
-          FileName: file.name,
-          FileType: file.type,
-          FileData: base64,
-          FileSize: file.size,
-        });
-      };
-      reader.onerror = (error) => reject(error);
-    });
+
 
   const handleSubmit = async () => {
     if (!content && !file) return;
 
     setLoading(true);
-
-    let filesJson = null;
-    if (file) {
-      const base64File = await fileToBase64(file);
-      filesJson = JSON.stringify([base64File]);
-    }
 
     try {
       const res = await createPost({ content, file: file ?? undefined });

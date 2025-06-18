@@ -10,7 +10,7 @@ interface Props {
   totalComments: number
 }
 
-export default function CommentSection({ postId, totalComments }: Props) {
+export default function CommentSection({ postId }: Props) {
   const setComments = useCommentStore(s => s.setComments)
   const comments = useCommentStore(s => s.byPost[postId])
   const safeComments = comments ?? []
@@ -19,8 +19,8 @@ export default function CommentSection({ postId, totalComments }: Props) {
   useEffect(() => {
     setLoading(true)
     fetchComments(postId)
-      .then(list => setComments(postId, list))
-      .catch(err => console.error('Failed to load comments', err))
+      .then(list => setComments(postId, list)) 
+      .catch((err: unknown) => console.error('Failed to load comments', err))
       .finally(() => setLoading(false))
   }, [postId, setComments])
 

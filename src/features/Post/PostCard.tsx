@@ -10,7 +10,6 @@ import commentIcon from '../../assets/comment.svg';
 import Reactors from '../Reactors/Reactors';
 import { useStore } from '../../store';
 import type { ReactionType } from '../../services/reactionService';
-import CommentForm from '../Comment/CommentForm';
 import CommentSection from '../Comment/CommentSection';
 
 interface Props { 
@@ -54,7 +53,7 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
         (next ? 1 : 0) -
         (prev ? 1 : 0);
   
-      let prevAuthor = (p as any).prevAuthor ?? p.LastReactionAuthor;
+      let prevAuthor = (p as { prevAuthor?: string }).prevAuthor ?? p.LastReactionAuthor;
       let lastAuthor = p.LastReactionAuthor;
   
       if (next) {

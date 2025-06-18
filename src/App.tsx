@@ -33,7 +33,7 @@ const App = () => {
         setLoading(false);
       }
     })();
-  }, [setUser]);
+  }, [setUser, fetchReactionTypes]);
 
   return (
     <div className="app-container">

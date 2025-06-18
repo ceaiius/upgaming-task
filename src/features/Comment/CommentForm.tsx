@@ -3,6 +3,7 @@ import styles from './CommentForm.module.scss';
 import { createComment, createReply } from '../../services/commentService';
 import { useCommentStore } from '../../store/comment';
 import { useStore } from '../../store';
+import type { Comment } from '../../types/comment';
 
 interface Props {
   postId: number;
@@ -32,7 +33,7 @@ const CommentForm = ({ postId, parentId, onSubmit }: Props) => {
       AuthorID: user!.UserID,
       AuthorFirstName: user!.FirstName,
       AuthorLastName: user!.LastName,
-      AuthorAvatar: user!.AvatarUrl,
+      AuthorAvatar: user!.AvatarUrl ?? null,
       Content: text,
       IsAuthor: true,
       TotalReactions: 0,
@@ -52,7 +53,7 @@ const CommentForm = ({ postId, parentId, onSubmit }: Props) => {
     if (onSubmit) onSubmit();
     setSending(true);
     try {
-      const saved = parentId
+      const saved: Comment = parentId
         ? (await createReply(parentId, text)).data
         : (await createComment(postId, text)).data;
       remove(postId, temp.CommentID);

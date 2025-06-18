@@ -1,6 +1,5 @@
-// features/Comment/CommentList.tsx
 import CommentItem from './CommentItem';
-import type { Comment } from '../../services/commentService';
+import type { Comment } from '../../types/comment';
 import styles from './CommentList.module.scss';
 
 interface Props {

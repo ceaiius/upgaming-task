@@ -1,23 +1,7 @@
 import api from '../api/axios';
 import { type ReactionType } from './reactionService';
+import type { Comment } from '../types/comment';
 
-export interface Comment {
-  CommentID: number;
-  ParentCommentID?: number | null;
-  PostID: number;
-  AuthorID: number;
-  AuthorFirstName: string;
-  AuthorLastName: string;
-  AuthorAvatar?: string | null;
-  Content: string;
-  IsAuthor: boolean;
-  TotalReactions: number;
-  TotalReplies: number;
-  UserReaction?: ReactionType | null;
-  CreateTime: string;
-  Reactions: Record<ReactionType, number>;
-  Comments: Comment[];
-}
 
 export const fetchComments = (postId: number) =>
   api.post<Comment[]>('/Comment/GetAll', { PostID: postId }).then(r => r.data);
