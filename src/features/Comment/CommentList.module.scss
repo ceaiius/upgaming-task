@@ -1,11 +1,10 @@
-.ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: .75rem;
-  }
+.ul, ul, .commentList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  border: none;
+}
 
 .commentList {
     padding: 0 0 0.5rem 0;

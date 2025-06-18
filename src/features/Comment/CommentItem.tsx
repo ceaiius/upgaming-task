@@ -48,7 +48,7 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
   const hasReplies = Array.isArray(comment.Comments) && comment.Comments.length > 0;
 
   return (
-    <li className={styles.item + (hasReplies ? ' ' + styles.hasReplies : '')}>
+    <li className={styles.item + (isRoot ? ' ' + styles.isRoot : '') + (hasReplies ? ' ' + styles.hasReplies : '')}>
       <div className={styles.commentBox}>
         <div className={styles.row}>
           <img src={comment.AuthorAvatar || '/default-avatar.png'} className={styles.avatar} />
@@ -94,7 +94,7 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
               <span className={styles.action} onClick={() => setReplying(r => !r)}>Reply</span>
             </div>
             {replying && (
-              <CommentForm postId={postId} parentId={comment.CommentID} />
+              <CommentForm postId={postId} parentId={comment.CommentID} onSubmit={() => setReplying(false)} />
             )}
             {isRoot && hasReplies && (
               <div className={styles.showReplies} onClick={() => setShowReplies(r => !r)}>

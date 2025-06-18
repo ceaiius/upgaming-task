@@ -46,18 +46,7 @@ export const useCommentStore = create<State>((set) => ({
     set(s => ({
       byPost: {
         ...s.byPost,
-        [post]: (s.byPost[post] ?? []).map(x =>
-          x.CommentID === parentId
-            ? { ...x, Comments: [reply, ...(x.Comments ?? [])] }
-            : {
-                ...x,
-                Comments: x.Comments?.map(r =>
-                  r.CommentID === parentId
-                    ? { ...r, Comments: [reply, ...(r.Comments ?? [])] }
-                    : r
-                ) ?? x.Comments
-              }
-        )
+        [post]: addReplyToTree(s.byPost[post] ?? [], parentId, reply),
       }
     })),
 }));
@@ -69,4 +58,16 @@ function removeFromTree(comments: Comment[], id: number): Comment[] {
       ...c,
       Comments: c.Comments ? removeFromTree(c.Comments, id) : [],
     }));
+}
+
+function addReplyToTree(comments: Comment[], parentId: number, reply: Comment): Comment[] {
+  return comments.map(c => {
+    if (c.CommentID === parentId) {
+      return { ...c, Comments: [reply, ...(c.Comments ?? [])] };
+    }
+    return {
+      ...c,
+      Comments: c.Comments ? addReplyToTree(c.Comments, parentId, reply) : [],
+    };
+  });
 }

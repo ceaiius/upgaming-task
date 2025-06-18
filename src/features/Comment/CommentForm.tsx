@@ -7,9 +7,10 @@ import { useStore } from '../../store';
 interface Props {
   postId: number;
   parentId: number | null;
+  onSubmit?: () => void;
 }
 
-const CommentForm = ({ postId, parentId }: Props) => {
+const CommentForm = ({ postId, parentId, onSubmit }: Props) => {
   const [text, setText] = useState('');
   const [sending, setSending] = useState(false);
   const add = useCommentStore(s => s.addComment);
@@ -48,6 +49,7 @@ const CommentForm = ({ postId, parentId }: Props) => {
     }
     setText('');
     if (inputRef.current) inputRef.current.textContent = '';
+    if (onSubmit) onSubmit();
     setSending(true);
     try {
       const saved = parentId

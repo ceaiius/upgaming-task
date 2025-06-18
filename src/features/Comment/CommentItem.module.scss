@@ -20,6 +20,7 @@
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  margin: 8px 0;
   margin-right: 0.75rem;
   flex-shrink: 0;
 }
@@ -39,6 +40,11 @@
   font-size: 1rem;
   color: $text-primary;
   word-break: break-word;
+}
+
+.commentList {
+  border-left: 2px solid $border;
+  padding-left: 1rem;
 }
 
 .actions {
@@ -130,13 +136,29 @@
 }
 
 .replies {
+ 
+  padding-left: 1rem;
   margin-left: 2.5rem;
   margin-top: 0.5rem;
-  border-left: 2px solid $border;
-  padding-left: 1rem;
   display: flex;
-  flex-direction: column !important;
+  flex-direction: column;
   gap: 0.5rem;
+  position: relative;
+}
+
+
+
+
+
+.item.hasReplies::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 60px;
+  height: calc(100% - 60px);
+  width: 2px;
+  background: $border;
+  z-index: 1;
 }
 
 .menuWrapper {
