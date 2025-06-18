@@ -6,9 +6,9 @@
   
   .popover {
     position: absolute;
-    top: 100%;
+    bottom: 100%;
     left: 50%;
-    transform: translateX(-50%) translateY(8px);
+    transform: translateX(-50%) translateY(-10px);
     min-width: 125px;
     background: #1e1e2a;
     color: #fff;

@@ -25,6 +25,7 @@ const Reactors = ({ post, user }: Props) => {
 
   const [allReactors, setAllReactors] = useState<Reactor[] | null>(null);
   const [loading, setLoading] = useState(false);
+  
 
   const loadReactors = useCallback(async () => {
     if (allReactors || loading) return;
@@ -37,33 +38,40 @@ const Reactors = ({ post, user }: Props) => {
   }, [allReactors, loading, PostID]);
 
   useEffect(() => {
-    if (!user || !allReactors) return;
-
+    if (!user) return; 
+    if (!allReactors) return;
+  
     setAllReactors(prev => {
       if (!prev) return prev;
-      const idx = prev.findIndex(r => r.UserID === user.UserID);
+  
+      const meIdx    = prev.findIndex(r => r.UserID === user.UserID);
       const nextType = post.UserReaction;
-
-      let list = idx !== -1 ? prev.filter(r => r.UserID !== user.UserID) : prev;
+  
+      let list = meIdx !== -1
+        ? prev.filter(r => r.UserID !== user.UserID) 
+        : prev;
+  
       if (nextType) {
         list = [
           {
-            UserID: user.UserID,
+            UserID:    user.UserID,
             FirstName: user.FirstName,
-            LastName: user.LastName,
+            LastName:  user.LastName,
             AvatarUrl: user.AvatarUrl,
             ReactionType: nextType,
           },
           ...list,
         ];
       }
+  
+      if (list.length === prev.length &&
+          list.every((r, i) => r === prev[i])) {
+        return prev; 
+      }
+  
       return list;
     });
-  }, [post.UserReaction, user, allReactors]);
-
-  if (TotalReactions === 0 && !loading && !allReactors?.length) {
-    return null;
-  }
+  }, [post.UserReaction, user]);  
 
   const topTypes = useMemo(() => 
     Object.entries(Reactions)
@@ -119,9 +127,16 @@ const Reactors = ({ post, user }: Props) => {
     );
   };
 
-  const firstName = allReactors?.[0]
-  ? `${allReactors[0].FirstName} ${allReactors[0].LastName}`
-  : LastReactionAuthor;
+  let displayName = LastReactionAuthor;
+  if (allReactors && allReactors.length > 0) {
+    if (user && allReactors[0].UserID === user.UserID) {
+      if (allReactors[1]) {
+        displayName = `${allReactors[1].FirstName} ${allReactors[1].LastName}`;
+      }
+    } else {
+      displayName = `${allReactors[0].FirstName} ${allReactors[0].LastName}`;
+    }
+  }
 
   return (
     <div className={styles.summary}>
@@ -147,7 +162,7 @@ const Reactors = ({ post, user }: Props) => {
       ) : (
         <Popover content={makeList()} onOpen={loadReactors}>
           <span className={styles.text}>
-            {firstName} and {TotalReactions - 1} others
+            {displayName && `${displayName} and ${TotalReactions - 1} others`}
           </span>
         </Popover>
       )}

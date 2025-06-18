@@ -36,20 +36,46 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  const handleReactionChange = (prev: ReactionType | null, next: ReactionType | null) => {
+  const handleReactionChange = (
+    prev: ReactionType | null,
+    next: ReactionType | null
+  ) => {
     setPost((p) => {
       const counts = { ...p.Reactions };
       if (prev) counts[prev] = Math.max(0, (counts[prev] || 0) - 1);
       if (next) counts[next] = (counts[next] || 0) + 1;
-
-      const total = p.TotalReactions + (next ? 1 : 0) - (prev ? 1 : 0);
+  
+      const total =
+        p.TotalReactions +
+        (next ? 1 : 0) -
+        (prev ? 1 : 0);
+  
+      let prevAuthor = (p as any).prevAuthor ?? p.LastReactionAuthor;
+      let lastAuthor = p.LastReactionAuthor;
+  
+      const myName = `${user?.FirstName} ${user?.LastName}`;
+  
+      if (next) {
+        prevAuthor = lastAuthor;
+        lastAuthor = prevAuthor === myName && prevAuthor !== undefined
+          ? prevAuthor
+          : myName;
+      } else if (prev) {
+        lastAuthor = total > 0 ? prevAuthor : undefined;
+        if (total === 0) prevAuthor = undefined;
+      }
+  
+      if (lastAuthor === myName && prevAuthor && prevAuthor !== myName) {
+        lastAuthor = prevAuthor;
+      }
+  
       return {
         ...p,
         UserReaction: next || undefined,
         Reactions: counts,
         TotalReactions: total,
-        LastReactionAuthor:
-          next ? `${user?.FirstName} ${user?.LastName}` : p.LastReactionAuthor,
+        LastReactionAuthor: lastAuthor,
+        prevAuthor,
       };
     });
   };

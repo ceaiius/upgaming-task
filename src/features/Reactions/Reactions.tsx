@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import styles from './Reactions.module.scss';
 import { type ReactionType } from '../../services/reactionService';
 import { toggleReaction } from '../../services/reactionService';
@@ -16,8 +16,6 @@ const Reactions = ({ post, onToggle }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [userReaction, setUserReaction] = useState<ReactionType | null>(post.UserReaction ?? null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pendingReactionRef = useRef<{ next: ReactionType|null, apiType: ReactionType|null } | null>(null);
   const handleMouseEnter = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -27,44 +25,26 @@ const Reactions = ({ post, onToggle }: Props) => {
     }, 300); 
   }, []);
 
-  const debouncedMutate = useCallback(async (next: ReactionType|null, apiType: ReactionType|null) => {
-    // Clear any pending debounced call
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    // Store the latest reaction
-    pendingReactionRef.current = { next, apiType };
-
-    // Debounce the API call by 250ms
-    debounceRef.current = setTimeout(async () => {
-      const pending = pendingReactionRef.current;
-      if (!pending) return;
-
-      const { next: finalNext, apiType: finalApiType } = pending;
-      const prev = userReaction;
-      
-      setUserReaction(finalNext);
-      onToggle(prev, finalNext);
-      
-      try {
-        if (finalApiType) {
-          await toggleReaction(post.PostID, finalApiType);
-        }
-      } catch {
-        setUserReaction(prev);
-        onToggle(finalNext, prev);
+  const mutate = async (next: ReactionType|null, apiType: ReactionType|null) => {
+    const prev = userReaction;
+    setUserReaction(next);
+    onToggle(prev, next);
+    try {
+      if (apiType) {
+        await toggleReaction(post.PostID, apiType);
       }
-      
-      pendingReactionRef.current = null;
-    }, 250);
-  }, [userReaction, onToggle, post.PostID]);
+    } catch {
+      setUserReaction(prev);
+      onToggle(next, prev);
+    }
+  };
+
 
   const handleDefaultLike = () =>
-    debouncedMutate(userReaction ? null : 'LIKE', userReaction || 'LIKE');
+    mutate(userReaction ? null : 'LIKE', userReaction || 'LIKE');
 
   const handleReact = (t: ReactionType) =>
-    debouncedMutate(userReaction === t ? null : t, t);
+    mutate(userReaction === t ? null : t, t);
   
 
   const handleMouseLeave = useCallback(() => {
@@ -76,13 +56,7 @@ const Reactions = ({ post, onToggle }: Props) => {
     }, 100);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
-    };
-  }, []);
+
 
     const activeReaction = reactionOptions.find((r) => r.type === userReaction);
     const displayIcon = activeReaction?.icon || likeIcon;
