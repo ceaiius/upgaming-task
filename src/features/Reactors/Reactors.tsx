@@ -38,19 +38,18 @@ const Reactors = ({ post, user }: Props) => {
   }, [allReactors, loading, PostID]);
 
   useEffect(() => {
-    if (!user) return; 
-    if (!allReactors) return;
-  
+    if (!user) return;
+
     setAllReactors(prev => {
       if (!prev) return prev;
-  
+
       const meIdx    = prev.findIndex(r => r.UserID === user.UserID);
       const nextType = post.UserReaction;
-  
+
       let list = meIdx !== -1
-        ? prev.filter(r => r.UserID !== user.UserID) 
+        ? prev.filter(r => r.UserID !== user.UserID)
         : prev;
-  
+
       if (nextType) {
         list = [
           {
@@ -63,15 +62,17 @@ const Reactors = ({ post, user }: Props) => {
           ...list,
         ];
       }
-  
+
       if (list.length === prev.length &&
           list.every((r, i) => r === prev[i])) {
-        return prev; 
+        return prev;
       }
-  
+
       return list;
-    });
-  }, [post.UserReaction, user, allReactors]);  
+    }); 
+
+  },  [post.UserReaction, user]);
+
 
   const topTypes = useMemo(() => 
     Object.entries(Reactions)

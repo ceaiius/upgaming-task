@@ -7,6 +7,8 @@ import moreIcon from '../../assets/dots.svg'
 import deleteIcon from '../../assets/Delete.svg'
 import { deleteComment } from '../../services/commentService'
 import { useCommentStore } from '../../store/comment'
+import CommentReactions from './CommentReactions'
+import { reactionOptions } from '../../constants/reactions'
 
 interface Props {
   comment: Comment
@@ -88,7 +90,31 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
             </div>
             <div className={styles.content}>{comment.Content}</div>
             <div className={styles.actions}>
-              <span className={styles.action}>Like</span>
+              <CommentReactions comment={comment} postId={postId} />
+              {(() => {
+                const reactionCounts = comment.Reactions || {};
+                const sortedTypes = Object.entries(reactionCounts)
+                  .filter(([, count]) => count > 0)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 3)
+                  .map(([type]) => type);
+                const totalReactions = Object.values(reactionCounts).reduce((a, b) => a + b, 0);
+                return sortedTypes.length > 0 ? (
+                  <span className={styles.reactionIcons}>
+                    {sortedTypes.map(type => {
+                      const option = reactionOptions.find(r => r.type === type);
+                      return option ? (
+                        <img key={type} src={option.icon} alt={option.label} className={styles.reactionIconSmall} />
+                      ) : null;
+                    })}
+                      <span className={styles.reactionCount}>
+                        <span>{totalReactions}</span>
+                        <div className={styles.circle}></div>
+                        
+                      </span>
+                  </span>
+                ) : null;
+              })()}
               <span className={styles.action} onClick={() => setReplying(r => !r)}>Reply</span>
             </div>
             {replying && (

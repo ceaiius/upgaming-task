@@ -49,8 +49,9 @@
 
 .actions {
   display: flex;
-  gap: 1.5rem;
-  font-size: 0.95rem;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.875rem;
   color: $text-tertiary;
   margin-bottom: 0.25rem;
 }
@@ -117,10 +118,7 @@
   cursor: pointer;
   color: $text-quaternary;
   font-weight: 500;
-  &:hover {
-    color: $text-error-primary;
-    text-decoration: underline;
-  }
+  
 }
 
 .showReplies {
@@ -216,4 +214,52 @@
     --spinner-color: #D92D20;
   }
 }
+
+.reactionIcons {
+  display: flex;
+  position: relative;
   
+  > * {
+    img {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    & + * {
+      margin-left: -4px;
+    }
+  }
+}
+
+.reactionIconSmall {
+  width: 16px;
+  height: 16px;
+  margin-right: 1px;
+  vertical-align: middle;
+}
+
+.reactionCount {
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $text-disabled;
+  margin-left: 0.5rem;
+}
+
+.reactionCountWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.circle {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: $text-senary;
+}
+

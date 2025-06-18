@@ -5,9 +5,21 @@ interface State {
   byPost: Record<number, Comment[]>;
   setComments(post: number, list: Comment[]): void;
   addComment(post: number, c: Comment): void;
-  patchComment(post: number, c: Comment): void;
+  patchComment(post: number, c: Partial<Comment> & { CommentID: number }): void;
   removeComment(post: number, id: number): void;
   addReply(post: number, parentId: number, reply: Comment): void;
+}
+
+function patchInTree(comments: Comment[], updated: Partial<Comment> & { CommentID: number }): Comment[] {
+  return comments.map(c => {
+    if (c.CommentID === updated.CommentID) {
+      return { ...c, ...updated };
+    }
+    return {
+      ...c,
+      Comments: c.Comments ? patchInTree(c.Comments, updated) : [],
+    };
+  });
 }
 
 export const useCommentStore = create<State>((set) => ({
@@ -28,9 +40,7 @@ export const useCommentStore = create<State>((set) => ({
     set(s => ({
       byPost: {
         ...s.byPost,
-        [post]: (s.byPost[post] ?? []).map(x =>
-          x.CommentID === c.CommentID ? c : x
-        )
+        [post]: patchInTree(s.byPost[post] ?? [], c)
       }
     })),
 

@@ -21,3 +21,8 @@ export const toggleCommentReact = (id: number, type?: ReactionType) =>
 
 export const deleteComment = (id: number) =>
   api.post('/Comment/Delete', { CommentID: id });
+
+export const getCommentReactors = async (commentId: number) => {
+  const res = await api.post('/Comment/ReactorGetAll', { CommentID: commentId });
+  return res.data;
+};
