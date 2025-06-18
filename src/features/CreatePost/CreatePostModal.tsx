@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import styles from './CreatePost.module.scss';
 import uploadIcon from '../../assets/thumbnail.svg'
 import removeIcon from '../../assets/remove.svg'
@@ -10,7 +10,7 @@ interface Props {
   onPostCreated: (post: Post) => void;
 }
 
-const CreatePostModal = ({ onClose, onPostCreated }: Props) => {
+const CreatePostModal = forwardRef<HTMLDivElement, Props>(({ onClose, onPostCreated }, ref) => {
   const [content, setContent] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -62,7 +62,7 @@ const CreatePostModal = ({ onClose, onPostCreated }: Props) => {
       onPostCreated(res.data);
       setContent('');
       handleRemoveImage();
-      onClose(); // Close modal
+      onClose();
     } catch (error) {
       console.error('Post creation failed:', error);
     } finally {
@@ -70,9 +70,15 @@ const CreatePostModal = ({ onClose, onPostCreated }: Props) => {
     }
   };
 
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modal}>
+    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
+      <div className={styles.modal} ref={ref}>
         <div className={styles.modalHeader}>
           <h3>Create Post</h3>
           <a onClick={onClose} className={styles.closeBtn}>✕</a>
@@ -110,6 +116,6 @@ const CreatePostModal = ({ onClose, onPostCreated }: Props) => {
       </div>
     </div>
   );
-};
+});
 
 export default CreatePostModal;
