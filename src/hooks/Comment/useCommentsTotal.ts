@@ -1,6 +1,7 @@
 import { useCommentStore } from '../../store/comment';
+import type { Comment } from '../../types/comment';
 
-function countAllComments(comments: any[]): number {
+function countAllComments(comments: Comment[]): number {
   if (!comments) return 0;
   return comments.reduce(
     (acc, c) => acc + 1 + countAllComments(c.Comments),

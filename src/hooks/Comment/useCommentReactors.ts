@@ -1,8 +1,9 @@
 import { useState, useCallback } from 'react';
 import { getCommentReactors } from '../../services/commentService';
+import type { Reactor } from '../../services/reactionService';
 
 export function useCommentReactors(commentId: number) {
-  const [reactors, setReactors] = useState<any[] | null>(null);
+  const [reactors, setReactors] = useState<Reactor[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   const loadReactors = useCallback(async () => {

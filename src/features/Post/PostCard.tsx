@@ -1,15 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './PostCard.module.scss';
 import { type Post } from '../../types/post';
 import { formatPostTimestamp } from '../../utils/dateUtils';
 import moreIcon from '../../assets/dots.svg';
 import deleteIcon from '../../assets/delete.svg';
-import { deletePost } from '../../services/postService';
 import Reactions from '../Reactions/Reactions';
 import commentIcon from '../../assets/comment.svg';
 import Reactors from '../Reactors/Reactors';
-import { useStore } from '../../store';
-import type { ReactionType } from '../../services/reactionService';
 import CommentSection from '../Comment/CommentSection';
 import CommentsTotal from '../Comment/CommentsTotal';
 import Avatar from '../../components/Avatar/Avatar';
@@ -24,7 +20,7 @@ const PostCard = ({ post: initial, onDelete }: Props) => {
   const {
     user, showMore, setShowMore, imageLoaded, setImageLoaded,
     isDeleting, showMenu, setShowMenu, menuRef,
-    showCommentInput, setShowCommentInput, post, setPost,
+    showCommentInput, setShowCommentInput, post,
     isAuthor, handleReactionChange, handleDeletePost
   } = usePostCard(initial, onDelete);
 
