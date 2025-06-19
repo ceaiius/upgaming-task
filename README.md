@@ -34,6 +34,14 @@ VITE_API_URL=<your-backend-api-url>
 ```
 - Replace `<your-backend-api-url>` with the base URL of your backend API (e.g., `http://localhost:5000/api`).
 
+
+```
+VITE_API_TOKEN=<your-auth-token>
+```
+- Replace `<your-auth-token>` with the X-Token for the backend API.
+
+```
+
 ### 4. **Run the app locally**
 ```bash
  npm run dev
