@@ -66,7 +66,7 @@ const CommentsAuthorsPopover = ({ postId, children }: { postId: number; children
 
 const CommentsTotal = ({ postId, totalComments, onClick }: Props) => {
   const count = useCommentsTotal(postId, totalComments);
-  if (count === 0) return null;
+  
   return (
     <CommentsAuthorsPopover postId={postId}>
       <div className={styles.commentsTotal} onClick={onClick}>{count} Comments</div>

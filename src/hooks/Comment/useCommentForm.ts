@@ -15,7 +15,11 @@ export function useCommentForm(postId: number, parentId: number | null, onSubmit
   const inputRef = useRef<HTMLDivElement>(null);
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
-    setText(e.currentTarget.textContent || '');
+    const value = e.currentTarget.textContent || '';
+    setText(value);
+    if (value.trim() === '') {
+      e.currentTarget.innerHTML = '';
+    }
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
