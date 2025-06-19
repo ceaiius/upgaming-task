@@ -1,28 +1,14 @@
-import { useEffect, useState } from 'react'
 import styles from './CommentSection.module.scss'
-import { fetchComments } from '../../services/commentService'
-import { useCommentStore } from '../../store/comment'
 import CommentForm from './CommentForm'
 import CommentList from './CommentList'
+import { useCommentSection } from '../../hooks/Comment/useCommentSection'
 
 interface Props {
   postId: number
 }
 
 export default function CommentSection({ postId }: Props) {
-  const setComments = useCommentStore(s => s.setComments)
-  const comments = useCommentStore(s => s.byPost[postId])
-  const safeComments = comments ?? []
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (comments !== undefined) return;
-    setLoading(true)
-    fetchComments(postId)
-      .then(list => setComments(postId, list)) 
-      .catch((err: unknown) => console.error('Failed to load comments', err))
-      .finally(() => setLoading(false))
-  }, [postId, setComments, comments])
+  const { safeComments, loading } = useCommentSection(postId)
 
   return (
     <div className={styles.section}>

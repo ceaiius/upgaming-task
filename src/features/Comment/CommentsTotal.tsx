@@ -4,7 +4,7 @@ import { fetchCommentAuthors } from '../../services/commentService'
 import { useState, useCallback } from 'react'
 import type { ReactNode } from 'react'
 import type { Commenter } from '../../types/commenter'
-import { useCommentStore } from '../../store/comment'
+import { useCommentsTotal } from '../../hooks/Comment/useCommentsTotal'
 
 interface Props {
     postId: number
@@ -12,13 +12,6 @@ interface Props {
     onClick: () => void
 }
 
-function countAllComments(comments: any[]): number {
-  if (!comments) return 0;
-  return comments.reduce(
-    (acc, c) => acc + 1 + countAllComments(c.Comments),
-    0
-  );
-}
 
 const CommentsAuthorsPopover = ({ postId, children }: { postId: number; children: ReactNode }) => {
   const [authors, setAuthors] = useState<Commenter[]>([])
@@ -72,9 +65,7 @@ const CommentsAuthorsPopover = ({ postId, children }: { postId: number; children
 }
 
 const CommentsTotal = ({ postId, totalComments, onClick }: Props) => {
-  const comments = useCommentStore(s => s.byPost[postId]);
-  const storeCount = comments ? countAllComments(comments) : undefined;
-  const count = typeof storeCount === 'number' ? storeCount : totalComments;
+  const count = useCommentsTotal(postId, totalComments);
   if (count === 0) return null;
   return (
     <CommentsAuthorsPopover postId={postId}>

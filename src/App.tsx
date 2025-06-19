@@ -1,39 +1,12 @@
-import { useEffect, useState } from 'react';
 import './styles/main.scss';
-import { useStore } from './store';
-import { fetchUser } from './services/userService';
-
 import CreatePostPreview from './features/CreatePost/CreatePostPreview';
 import Feed from './features/Feed/Feed';
 import Sidebar from './features/Sidebar/Sidebar';
 import type { Post } from './types/post';
-import { useReactionStore } from './store/reactions';
-import { fetchAllPosts } from './services/postService';
-
+import { useAppData } from './hooks/useAppData';
 const App = () => {
-  const { setUser, user } = useStore();
-  const [posts, setPosts] = useState<Post[]>([]);
-  const { fetchReactionTypes } = useReactionStore();
-  const [loading, setLoading] = useState(true);
+  const { posts, setPosts, user, loading } = useAppData();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [postsData, userData] = await Promise.all([
-          fetchAllPosts(),
-          fetchUser(),
-        ]);
-        
-        setPosts(postsData);
-        setUser(userData);
-        fetchReactionTypes();
-      } catch (err) {
-        console.error('Failed to load initial data:', err);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [setUser, fetchReactionTypes]);
 
   return (
     <div className="app-container">

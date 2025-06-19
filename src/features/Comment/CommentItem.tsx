@@ -1,11 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
+import { useCommentItem } from '../../hooks/Comment/useCommentItem';
 import styles from './CommentItem.module.scss'
 import type { Comment } from '../../types/comment'
 import CommentForm from './CommentForm'
 import moreIcon from '../../assets/dots.svg'
 import deleteIcon from '../../assets/delete.svg'
-import { deleteComment } from '../../services/commentService'
-import { useCommentStore } from '../../store/comment'
 import CommentReactions from './CommentReactions'
 import { reactionOptions } from '../../constants/reactions'
 import Avatar from '../../components/Avatar/Avatar'
@@ -18,35 +16,16 @@ interface Props {
 }
 
 export default function CommentItem({ comment, postId, isRoot = false }: Props) {
-  const [replying, setReplying] = useState(false)
-  const [showReplies, setShowReplies] = useState(false)
-  const [showMenu, setShowMenu] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
-  const removeComment = useCommentStore(s => s.removeComment)
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setShowMenu(false)
-      }
-    }
-    if (showMenu) document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [showMenu])
+  const {
+    replying, setReplying,
+    showReplies, setShowReplies,
+    showMenu, setShowMenu,
+    isDeleting,
+    menuRef,
+    handleDelete,
+  } = useCommentItem(comment, postId);
 
   const commentDate = formatPostTimestamp(comment.CreateTime, 'relative')
-
-  const handleDelete = async () => {
-    try {
-      setIsDeleting(true)
-      await deleteComment(comment.CommentID)
-      removeComment(postId, comment.CommentID)
-    } finally {
-      setIsDeleting(false)
-      setShowMenu(false)
-    }
-  }
 
   const hasReplies = Array.isArray(comment.Comments) && comment.Comments.length > 0;
 

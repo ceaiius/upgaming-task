@@ -1,29 +1,9 @@
-import { useState, useCallback } from 'react';
 import Popover from '../Reactors/Popover';
-import { getCommentReactors } from '../../services/commentService';
 import styles from '../Reactors/Reactors.module.scss';
-
-interface Reactor {
-  UserID: number;
-  FirstName: string;
-  LastName: string;
-  ReactionType: string;
-  AvatarUrl?: string;
-}
+import { useCommentReactors } from '../../hooks/Comment/useCommentReactors';
 
 const CommentReactors = ({ commentId, children }: { commentId: number; children: React.ReactNode }) => {
-  const [reactors, setReactors] = useState<Reactor[] | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const loadReactors = useCallback(async () => {
-    if (reactors || loading) return;
-    setLoading(true);
-    try {
-      setReactors(await getCommentReactors(commentId));
-    } finally {
-      setLoading(false);
-    }
-  }, [reactors, loading, commentId]);
+  const { reactors, loading, loadReactors } = useCommentReactors(commentId);
 
   return (
     <Popover

@@ -1,10 +1,9 @@
-import { useRef, useState, useCallback } from 'react';
-import styles from './Reactions.module.scss';
-import { type ReactionType } from '../../services/reactionService';
-import { toggleReaction } from '../../services/reactionService';
-import { type Post } from '../../types/post';
-import likeIcon from '../../assets/like.svg';
 import { reactionOptions } from '../../constants/reactions';
+import styles from './Reactions.module.scss';
+import likeIcon from '../../assets/like.svg';
+import { type ReactionType } from '../../services/reactionService';
+import { type Post } from '../../types/post';
+import { useReactions } from '../../hooks/useReactions';
 
 interface Props {
   post: Post;
@@ -12,58 +11,20 @@ interface Props {
 }
 
 const Reactions = ({ post, onToggle }: Props) => {
-  const [showPopup, setShowPopup] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [userReaction, setUserReaction] = useState<ReactionType | null>(post.UserReaction ?? null);
-  const handleMouseEnter = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      setShowPopup(true);
-    }, 300); 
-  }, []);
+  const {
+    showPopup,
+    containerRef,
+    userReaction,
+    handleMouseEnter,
+    handleMouseLeave,
+    handleDefaultLike,
+    handleReact,
+  } = useReactions(post, onToggle);
 
-  const mutate = async (next: ReactionType|null, apiType: ReactionType|null) => {
-    const prev = userReaction;
-    setUserReaction(next);
-    onToggle(prev, next);
-    try {
-      if (apiType) {
-        await toggleReaction(post.PostID, apiType);
-      }
-    } catch {
-      setUserReaction(prev);
-      onToggle(next, prev);
-    }
-  };
-
-
-  const handleDefaultLike = () =>
-    mutate(userReaction ? null : 'LIKE', userReaction || 'LIKE');
-
-  const handleReact = (t: ReactionType) =>
-    mutate(userReaction === t ? null : t, t);
-  
-
-  const handleMouseLeave = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      setShowPopup(false);
-    }, 100);
-  }, []);
-
-
-
-    const activeReaction = reactionOptions.find((r) => r.type === userReaction);
-    const displayIcon = activeReaction?.icon || likeIcon;
-    const displayLabel = activeReaction?.label || 'Like';
-    const displayColor = activeReaction?.color || '#6b6b6b';
-
-  
+  const activeReaction = reactionOptions.find((r) => r.type === userReaction);
+  const displayIcon = activeReaction?.icon || likeIcon;
+  const displayLabel = activeReaction?.label || 'Like';
+  const displayColor = activeReaction?.color || '#6b6b6b';
 
   return (
     <div className={styles.reactionFooter}>
@@ -75,7 +36,6 @@ const Reactions = ({ post, onToggle }: Props) => {
       >
         <div
             className={styles.reactBtn}
-            
             onClick={handleDefaultLike}
             >
             <div className={styles.reactBtnContent}>
