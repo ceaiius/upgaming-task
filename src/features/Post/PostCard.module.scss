@@ -44,18 +44,19 @@
 
     .nameAndTimestamp {
       display: flex;
+      align-items: center;
       flex-direction: row;
       gap: 0.5rem;
     }
 
     .timestamp {
-      font-size: 1rem;
+      font-size: 0.75rem;
       color: $text-tertiary;
     }
 
     .name {
         font-weight: 600;
-        font-size: 0.95rem;
+        font-size: 0.875rem;
       }
   }
 

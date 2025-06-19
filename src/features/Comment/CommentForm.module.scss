@@ -3,12 +3,12 @@
 .form {
   background: #fff;
   border: 1px solid #e5e6ea;
-  border-radius: 12px;
- 
+  border-radius: 24px;
   display: flex;
   align-items: flex-start;
   margin: 0.5rem 0;
   box-shadow: none;
+  overflow: hidden;
 }
 
 .inputWrapper {
@@ -30,7 +30,6 @@
   color: $text-primary;
   padding: 0.7rem 1rem;
   margin-right: 0.5rem;
-  border-radius: 12px;
   resize: none;
   white-space: pre-wrap;
   word-break: break-word;
@@ -49,6 +48,7 @@
   font-weight: 600;
   cursor: pointer;
   font-size: 0.875rem;
+  align-self: center;
   padding: 0 0.5rem;
   border-radius: 999px;
   transition: background 0.2s;

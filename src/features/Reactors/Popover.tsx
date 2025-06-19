@@ -1,4 +1,3 @@
-// features/ReactionSummary/Popover.tsx
 import { type ReactNode, useRef, useEffect, useState, useCallback } from 'react';
 import styles from './Popover.module.scss';
 
@@ -6,20 +5,36 @@ interface Props {
   children: ReactNode;
   content: ReactNode;
   onOpen?: () => void;
+  delay?: number; 
 }
 
-const Popover = ({ children, content, onOpen }: Props) => {
+const Popover = ({ children, content, onOpen, delay = 200 }: Props) => {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const hasOpenedRef = useRef(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleEnter = useCallback(() => {
-    setOpen(true);
-    if (!hasOpenedRef.current && onOpen) {
-      onOpen();
-      hasOpenedRef.current = true;
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-  }, [onOpen]);
+    
+    timeoutRef.current = setTimeout(() => {
+      setOpen(true);
+      if (!hasOpenedRef.current && onOpen) {
+        onOpen();
+        hasOpenedRef.current = true;
+      }
+    }, delay);
+  }, [onOpen, delay]);
+
+  const handleLeave = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setOpen(false);
+  }, []);
 
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
@@ -27,19 +42,24 @@ const Popover = ({ children, content, onOpen }: Props) => {
         wrapperRef.current &&
         !wrapperRef.current.contains(e.target as Node)
       ) {
-        setOpen(false);
+        handleLeave();
       }
     };
     document.addEventListener('mousemove', onMouseMove);
-    return () => document.removeEventListener('mousemove', onMouseMove);
-  }, []);
+    return () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [handleLeave]);
 
   return (
     <div
       className={styles.wrapper}
       ref={wrapperRef}
       onMouseEnter={handleEnter}
-      onMouseLeave={() => setOpen(false)}
+      onMouseLeave={handleLeave}
     >
       {children}
       {open && <div className={styles.popover}>{content}</div>}

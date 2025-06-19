@@ -1,4 +1,3 @@
-// features/Comment/CommentItem.tsx
 import { useState, useRef, useEffect } from 'react'
 import styles from './CommentItem.module.scss'
 import type { Comment } from '../../types/comment'
@@ -10,6 +9,7 @@ import { useCommentStore } from '../../store/comment'
 import CommentReactions from './CommentReactions'
 import { reactionOptions } from '../../constants/reactions'
 import Avatar from '../../components/Avatar/Avatar'
+import { formatPostTimestamp } from '../../utils/dateUtils'
 
 interface Props {
   comment: Comment
@@ -35,6 +35,8 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
     return () => document.removeEventListener('click', handleClickOutside)
   }, [showMenu])
 
+  const commentDate = formatPostTimestamp(comment.CreateTime, 'relative')
+
   const handleDelete = async () => {
     try {
       setIsDeleting(true)
@@ -48,6 +50,34 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
 
   const hasReplies = Array.isArray(comment.Comments) && comment.Comments.length > 0;
 
+  const reactionCounts = comment.Reactions || {};
+  const sortedTypes = Object.entries(reactionCounts)
+    .filter(([, count]) => count > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([type]) => type);
+  const totalReactions = Object.values(reactionCounts).reduce((a, b) => a + b, 0);
+
+  let reactionDisplay = null;
+  if (totalReactions === 0) {
+    reactionDisplay = <div className={styles.circle}></div>;
+  } else if (sortedTypes.length > 0) {
+    reactionDisplay = (
+      <span className={styles.reactionIcons}>
+        {sortedTypes.map(type => {
+          const option = reactionOptions.find(r => r.type === type);
+          return option ? (
+            <img key={type} src={option.icon} alt={option.label} className={styles.reactionIconSmall} />
+          ) : null;
+        })}
+        <span className={styles.reactionCount}>
+          <span>{totalReactions}</span>
+          <div className={styles.circle}></div>
+        </span>
+      </span>
+    );
+  }
+
   return (
     <li className={styles.item + (isRoot ? ' ' + styles.isRoot : '') + (hasReplies ? ' ' + styles.hasReplies : '')}>
       <div className={styles.commentBox}>
@@ -60,7 +90,7 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
                 <span className={styles.role}>Graphic Designer</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'end', gap: '0.5rem' }}>
-                <span className={styles.time}>{new Date(comment.CreateTime).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                <span className={styles.time}>{commentDate}</span>
                 {comment.IsAuthor && (
                   <div className={styles.menuWrapper} ref={menuRef}>
                     <button className={styles.menuButton} onClick={() => setShowMenu(v => !v)}>
@@ -92,37 +122,14 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
             <div className={styles.content}>{comment.Content}</div>
             <div className={styles.actions}>
               <CommentReactions comment={comment} postId={postId} />
-              {(() => {
-                const reactionCounts = comment.Reactions || {};
-                const sortedTypes = Object.entries(reactionCounts)
-                  .filter(([, count]) => count > 0)
-                  .sort((a, b) => b[1] - a[1])
-                  .slice(0, 3)
-                  .map(([type]) => type);
-                const totalReactions = Object.values(reactionCounts).reduce((a, b) => a + b, 0);
-                return sortedTypes.length > 0 ? (
-                  <span className={styles.reactionIcons}>
-                    {sortedTypes.map(type => {
-                      const option = reactionOptions.find(r => r.type === type);
-                      return option ? (
-                        <img key={type} src={option.icon} alt={option.label} className={styles.reactionIconSmall} />
-                      ) : null;
-                    })}
-                      <span className={styles.reactionCount}>
-                        <span>{totalReactions}</span>
-                        <div className={styles.circle}></div>
-                        
-                      </span>
-                  </span>
-                ) : null;
-              })()}
+              {reactionDisplay}
               <span className={styles.action} onClick={() => setReplying(r => !r)}>Reply</span>
             </div>
             {replying && (
               <CommentForm postId={postId} parentId={comment.CommentID} onSubmit={() => setReplying(false)} />
             )}
             {isRoot && hasReplies && (
-              <div className={styles.showReplies} onClick={() => setShowReplies(r => !r)}>
+              <div className={styles.showReplies} onClick={() => setShowReplies(r =>  r)}>
                 {showReplies ? `Hide replies (${comment.Comments.length})` : `Show replies (${comment.Comments.length})`}
               </div>
             )}

@@ -34,6 +34,13 @@ const CommentForm = ({ postId, parentId, onSubmit }: Props) => {
     document.execCommand('insertText', false, text);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      submit();
+    }
+  };
+
   const submit = async () => {
     if (!text.trim()) return;
     const temp = {
@@ -86,6 +93,7 @@ const CommentForm = ({ postId, parentId, onSubmit }: Props) => {
           ref={inputRef}
           onInput={handleInput}
           onPaste={handlePaste}
+          onKeyDown={handleKeyDown}
           data-placeholder={parentId ? 'Write a reply…' : 'Write your comment'}
           role="textbox"
           aria-multiline="true"

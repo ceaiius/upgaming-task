@@ -68,7 +68,7 @@ const CreatePostModal = forwardRef<HTMLDivElement, Props>(({ onClose, onPostCrea
           placeholder="What would you like to talk about today?"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className={styles.textarea}
+          className={`${styles.textarea} ${content.trim() ? styles.active : ''}`}
         />
 
         

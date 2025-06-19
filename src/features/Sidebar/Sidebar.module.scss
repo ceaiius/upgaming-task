@@ -10,13 +10,12 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
     width: 100%;
-    gap: 0.5rem;
     max-width: 300px;
   }
 
-  .header{
-    font-size: 10px;
+  h2{
     font-weight: 400;
+    font-size: 14px;
     color: $text-quaternary;
   }
 

@@ -13,7 +13,7 @@ interface Props {
 }
 
 const SidebarTopAuthors = ({ topAuthors }: Props) => {
-  console.log(topAuthors);
+
   return (
     <div className={styles.container}>
         <div className={styles.header}>
