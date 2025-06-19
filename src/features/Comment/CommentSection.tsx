@@ -16,12 +16,13 @@ export default function CommentSection({ postId }: Props) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    if (comments && comments.length > 0) return;
     setLoading(true)
     fetchComments(postId)
       .then(list => setComments(postId, list)) 
       .catch((err: unknown) => console.error('Failed to load comments', err))
       .finally(() => setLoading(false))
-  }, [postId, setComments])
+  }, [postId, setComments, comments])
 
   return (
     <div className={styles.section}>

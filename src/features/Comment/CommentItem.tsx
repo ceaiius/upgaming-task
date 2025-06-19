@@ -128,8 +128,8 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
             {replying && (
               <CommentForm postId={postId} parentId={comment.CommentID} onSubmit={() => setReplying(false)} />
             )}
-            {isRoot && hasReplies && (
-              <div className={styles.showReplies} onClick={() => setShowReplies(r =>  r)}>
+            {hasReplies && (
+              <div className={styles.showReplies} onClick={() => setShowReplies(r =>  !r)}>
                 {showReplies ? `Hide replies (${comment.Comments.length})` : `Show replies (${comment.Comments.length})`}
               </div>
             )}

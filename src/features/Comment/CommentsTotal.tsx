@@ -4,14 +4,23 @@ import { fetchCommentAuthors } from '../../services/commentService'
 import { useState, useCallback } from 'react'
 import type { ReactNode } from 'react'
 import type { Commenter } from '../../types/commenter'
+import { useCommentStore } from '../../store/comment'
 
 interface Props {
-    totalComments: number
     postId: number
+    totalComments: number
     onClick: () => void
 }
 
-const CommentsAuthorsPopover = ({ postId, children, onAuthorsChange }: { postId: number; children: ReactNode; onAuthorsChange?: (count: number) => void }) => {
+function countAllComments(comments: any[]): number {
+  if (!comments) return 0;
+  return comments.reduce(
+    (acc, c) => acc + 1 + countAllComments(c.Comments),
+    0
+  );
+}
+
+const CommentsAuthorsPopover = ({ postId, children }: { postId: number; children: ReactNode }) => {
   const [authors, setAuthors] = useState<Commenter[]>([])
   const [loading, setLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -29,11 +38,10 @@ const CommentsAuthorsPopover = ({ postId, children, onAuthorsChange }: { postId:
       }))
       setAuthors(mapped)
       setLoaded(true)
-      if (onAuthorsChange) onAuthorsChange(mapped.length)
     } finally {
       setLoading(false)
     }
-  }, [postId, loaded, loading, onAuthorsChange])
+  }, [postId, loaded, loading])
 
   return (
     <Popover
@@ -63,11 +71,13 @@ const CommentsAuthorsPopover = ({ postId, children, onAuthorsChange }: { postId:
   )
 }
 
-const CommentsTotal = ({ totalComments, postId, onClick }: Props) => {
-  const [count, setCount] = useState(totalComments)
+const CommentsTotal = ({ postId, totalComments, onClick }: Props) => {
+  const comments = useCommentStore(s => s.byPost[postId]);
+  const storeCount = comments ? countAllComments(comments) : undefined;
+  const count = typeof storeCount === 'number' ? storeCount : totalComments;
   if (count === 0) return null;
   return (
-    <CommentsAuthorsPopover postId={postId} onAuthorsChange={setCount}>
+    <CommentsAuthorsPopover postId={postId}>
       <div className={styles.commentsTotal} onClick={onClick}>{count} Comments</div>
     </CommentsAuthorsPopover>
   );
