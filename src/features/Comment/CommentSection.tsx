@@ -16,7 +16,7 @@ export default function CommentSection({ postId }: Props) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (comments && comments.length > 0) return;
+    if (comments !== undefined) return;
     setLoading(true)
     fetchComments(postId)
       .then(list => setComments(postId, list)) 

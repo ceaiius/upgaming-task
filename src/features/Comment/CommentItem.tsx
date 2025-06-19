@@ -126,7 +126,10 @@ export default function CommentItem({ comment, postId, isRoot = false }: Props) 
               <span className={styles.action} onClick={() => setReplying(r => !r)}>Reply</span>
             </div>
             {replying && (
-              <CommentForm postId={postId} parentId={comment.CommentID} onSubmit={() => setReplying(false)} />
+              <CommentForm postId={postId} parentId={comment.CommentID} onSubmit={() => {
+                setReplying(false);
+                setShowReplies(true);
+              }} />
             )}
             {hasReplies && (
               <div className={styles.showReplies} onClick={() => setShowReplies(r =>  !r)}>
